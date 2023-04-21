@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 
-const Filter = ({ onChange }) => {
+const Filter = ({ onChange, filter }) => {
   const handleChange = event => {
     onChange(event.target.value);
   };
   return (
     <>
       <p>Find contacts by name</p>
-      <input onChange={handleChange} type="search" name="filter" id="" />
+      <input onChange={handleChange} type="text" name="filter" value={filter} />
     </>
   );
 };

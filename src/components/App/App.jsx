@@ -16,8 +16,6 @@ export class App extends Component {
       {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
     ],
     filter: '',
-    name: '',
-  number: ''
   };
 
   addContact = (name, number) => {
@@ -49,6 +47,23 @@ export class App extends Component {
     this.state.contacts.filter(contact =>
       contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
     );
+
+
+    componentDidMount() {
+      const savedContacts = localStorage.getItem('contacts');
+      if (savedContacts !== null) {
+        const parsedContacts = JSON.parse(savedContacts);
+        this.setState({ contacts: parsedContacts });
+      } else {
+        this.setState({ contacts: this.contacts });
+      }
+    }
+  
+    componentDidUpdate(_, prevState) {
+      if (prevState.contacts !== this.state.contacts) {
+        localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+      }
+    }
 
   render() {
     const contacts = this.getFilterContacts();
