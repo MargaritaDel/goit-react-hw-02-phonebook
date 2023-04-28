@@ -1,42 +1,40 @@
-import {  useState } from 'react';
+import { Component } from 'react';
 import { ContainerForm, ContainerInput } from './ContactForms.styled';
 import PropTypes from 'prop-types';
+class ContactForm extends Component {
+  static propTypes = {
+    addContact: PropTypes.func.isRequired,
+  };
+  state = {
+    name: '',
+    number: '',
+  };
 
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
-function ContactForm ({addContact}){
-const [name, setName] = useState('');
-const [number, setNumber ] = useState ('')
+  resetForm = (name, number) => {
+    name.value = '';
+    number.value = '';
+    this.setState({ name: '', number: '' });
+  };
 
-const handleChange = (event) => {
-  const { name, value } = event.target;
-  if (name === 'name') {
-    setName(value);
-  } else if (name === 'number') {
-    setNumber(value);
-  }
-};
+  handleOnSubmit = event => {
+    event.preventDefault();
+    const { name, number } = event.target.elements;
+    this.props.addContact(this.state.name, this.state.number);
+    this.resetForm(name, number);
+  };
 
-
-const resetForm = () => {
-  setName('');
-  setNumber('');
-};
-const handleOnSubmit = (event) => {
-  event.preventDefault();
-  addContact(name, number);
-  resetForm();
-};
-
-
-
-  
+  render() {
     return (
-      <ContainerForm action="" onSubmit={handleOnSubmit}>
+      <ContainerForm action="" onSubmit={this.handleOnSubmit}>
         <ContainerInput htmlFor="" name="name">
           Name
           <input
-            value={name}
-            onChange={handleChange}
+            value={this.state.name}
+            onChange={this.handleChange}
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -47,8 +45,8 @@ const handleOnSubmit = (event) => {
         <ContainerInput htmlFor="" name="number">
           Number
           <input
-            value={number}
-            onChange={handleChange}
+            value={this.state.number}
+            onChange={this.handleChange}
             type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -61,12 +59,6 @@ const handleOnSubmit = (event) => {
       </ContainerForm>
     );
   }
-
-
-
-
-ContactForm.propTypes = {
-  addContact:PropTypes.func.isRequired,
-};
+}
 
 export default ContactForm;

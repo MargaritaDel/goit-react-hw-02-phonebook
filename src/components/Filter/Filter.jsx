@@ -1,18 +1,13 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 
-const Filter = ({ onChange, filter }) => {
-  const [inputValue, setInputValue] = useState(filter);
-
+const Filter = ({ onChange }) => {
   const handleChange = event => {
-    const value = event.target.value;
-    setInputValue(value);
-    onChange(value);
+    onChange(event.target.value);
   };
   return (
     <>
       <p>Find contacts by name</p>
-      <input onChange={handleChange} type="text" name="filter" value={filter} />
+      <input onChange={handleChange} type="search" name="filter" id="" />
     </>
   );
 };
