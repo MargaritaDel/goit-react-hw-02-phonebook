@@ -1,8 +1,13 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 const Filter = ({ onChange, filter }) => {
+  const [inputValue, setInputValue] = useState(filter);
+
   const handleChange = event => {
-    onChange(event.target.value);
+    const value = event.target.value;
+    setInputValue(value);
+    onChange(value);
   };
   return (
     <>

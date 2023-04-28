@@ -1,40 +1,42 @@
-import { Component } from 'react';
+import {  useState } from 'react';
 import { ContainerForm, ContainerInput } from './ContactForms.styled';
 import PropTypes from 'prop-types';
-class ContactForm extends Component {
-  static propTypes = {
-    addContact: PropTypes.func.isRequired,
-  };
-  state = {
-    name: '',
-    number: '',
-  };
 
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
 
-  resetForm = (name, number) => {
-    name.value = '';
-    number.value = '';
-    this.setState({ name: '', number: '' });
-  };
+function ContactForm ({addContact}){
+const [name, setName] = useState('');
+const [number, setNumber ] = useState ('')
 
-  handleOnSubmit = event => {
-    event.preventDefault();
-    const { name, number } = event.target.elements;
-    this.props.addContact(this.state.name, this.state.number);
-    this.resetForm(name, number);
-  };
+const handleChange = (event) => {
+  const { name, value } = event.target;
+  if (name === 'name') {
+    setName(value);
+  } else if (name === 'number') {
+    setNumber(value);
+  }
+};
 
-  render() {
+
+const resetForm = () => {
+  setName('');
+  setNumber('');
+};
+const handleOnSubmit = (event) => {
+  event.preventDefault();
+  addContact(name, number);
+  resetForm();
+};
+
+
+
+  
     return (
-      <ContainerForm action="" onSubmit={this.handleOnSubmit}>
+      <ContainerForm action="" onSubmit={handleOnSubmit}>
         <ContainerInput htmlFor="" name="name">
           Name
           <input
-            value={this.state.name}
-            onChange={this.handleChange}
+            value={name}
+            onChange={handleChange}
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -45,8 +47,8 @@ class ContactForm extends Component {
         <ContainerInput htmlFor="" name="number">
           Number
           <input
-            value={this.state.number}
-            onChange={this.handleChange}
+            value={number}
+            onChange={handleChange}
             type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -59,6 +61,12 @@ class ContactForm extends Component {
       </ContainerForm>
     );
   }
-}
+
+
+
+
+ContactForm.propTypes = {
+  addContact:PropTypes.func.isRequired,
+};
 
 export default ContactForm;
